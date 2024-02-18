@@ -6,7 +6,7 @@ This repository will be mainly to support, document, and keep track of all team 
 ## Documentation Ideals
 All of our documentation for each of the sections, go to individual files for more information. 
 
-### [P1 Project Plan]()
+### [P1 Project Plan](Documentation_1.md)
  - Due the 8th of March
 
 ### [P2 Project Plan]()
