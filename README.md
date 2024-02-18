@@ -1,1 +1,27 @@
 # Botball
+Hello dear User, whether you're part of (Team Name) / Team (Team #) or not. 
+
+This repository will be mainly to support, document, and keep track of all team files in an online source, properly saved and stored. 
+
+## Documentation Ideals
+All of our documentation for each of the sections, go to individual files for more information. 
+
+### [P1 Project Plan]()
+ - Due the 8th of March
+
+### [P2 Project Plan]()
+ - Due the 29th of March
+
+### [P3 Project Plan]()
+ - Due the 19th of April
+
+# Programming Files
+
+
+# Programming Help
+
+
+
+
+
+
