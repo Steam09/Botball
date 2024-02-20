@@ -21,16 +21,23 @@
 | Apr 19, 2024 | Period 3 Ends, Documentation 3 Due |
 |  |  |
 
-## Team Organization
+### Team Organization
+ - To accomplish the tasks, we have listed our desired tasks with who and how it will be accomplished.
 
+
+ - Demographic
 
 ## Game Goals and Tasks
-
+1. Opening the air vent (2)
+2. Sort the Poms and seperate them (3)
 
 ## Documentation Goals
-
+ - Videos & Pictures of all major design / coding iterations.
+ - Pull requests on Github to document procedure and progress.
+ - End of every session, document here any important information. 
 
 ## Social Media and Outreach
+ - 
 
 
 
