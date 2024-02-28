@@ -63,7 +63,6 @@ int main() {
 
 
 
-
     driveForward(22, leftVelocity, rightVelocity);
     while (analog(lightSensor) < 2800) { 
         driveForward(0.2, 100, 100)
