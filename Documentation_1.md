@@ -1,5 +1,5 @@
-# 2024 P1 Project Plan - (Team #)
-#### (Team Name), (Team #), Greater DC
+# 2024 P1 Project Plan - (246)
+#### (Team Name), (246), Greater DC
 
 ## Organization and Planning
 ### Calendar
