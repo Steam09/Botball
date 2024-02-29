@@ -12,7 +12,7 @@ create3_pose_get();
 
 
 int main() {
-
+    create_connect();
     enable_servos();
     cmpc(0);
     cmpc(1);
