@@ -1,15 +1,18 @@
+// https://www.kipr.org/doc/group__motor.html
+
 #include <kipr/wombat.h>
 #include <time.h>
+#include <thread.h>
+#include <compass.hpp>
 
-clock_t start = clock(), diff;
-diff = clock() - start;
-int msec = diff * 1000 / CLOCKS_PER_SEC;
-printf("Time taken is %d seconds and %d milliseconds", msec/1000, msec%1000); 
+thread_start(thread id);
+thread thread_create(thread_function func);	
+move_relative_position(int motor, int speed, int delta_pos);
 
 // Ports
 int sideServo = 0;
 int rotateServo = 1;
-int clawServo = 2; 
+int clawServo = 2;
 int lightSensor = 0;
 int etSensor = 1;
 
@@ -24,14 +27,27 @@ int verticalArm = 800;
 int openClaw = 20;
 int closedClaw = 400;
 int innerSide = 200;
+hey
+
+
 int pushedSide = 1500;
 
 void driveForward(float inches, int leftSpeed, int rightSpeed);
 void turnLeft(int degrees);
 void turnRight(int degrees);
 
-int main() {
+void timeThread(void) {
 
+
+
+    return NULL;
+
+}
+
+int main ( void ) {
+
+    thread_create(thread_function timeThread);
+    
     // Resetting Servos
     enable_servos();
     cmpc(0);
@@ -44,7 +60,10 @@ int main() {
     // Waiting for Start Light
     wait_for_light(lightSensor);
     shut_down_in(118);
-    
+    gyro_calibrate();
+    calibrate_compass();
+    thread_start(thread timeThread);
+
     // Push 4 intiail left side habitats to Area 1
     enable_servos();
     set_servo_position(sideServo, pushedSide);
@@ -52,28 +71,31 @@ int main() {
     set_servo_position(sideServo, innerSide);
 
     // Line up with tape
-    while (analog(0) < 2800) {
-        mav(0,400);
-        mav(1,400);
+    while (analog(0) < 2800)
+    {
+        mav(0, 400);
+        mav(1, 400);
         msleep(50);
     }
-    ao();
+    freeze();
 
     // Sweep top rocks to Area 5 Intersection
 
 
 
+
+
     driveForward(22, leftVelocity, rightVelocity);
-    while (analog(lightSensor) < 2800) { 
+    while (analog(lightSensor) < 2800)
+    {
         driveForward(0.2, 100, 100)
     }
 
-
-    
     // Light Switch
     cmpc(0);
     set_servo_position(rotateServo, 1400);
-    while (analog(etSensor) < 2800) { 
+    while (analog(etSensor) < 2800)
+    {
         driveForward(0.2, 100, 100)
     }
     set_servo_position(rotateServo, 1600);
@@ -82,112 +104,79 @@ int main() {
 
     // Top Cubes
     driveForward(-4, 500, 500)
-    set_servo_position(rotateServo, verticalArm);
-
-    
-
+        set_servo_position(rotateServo, verticalArm);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void driveForward(float inches, int leftSpeed, int rightSpeed) {
-    mav(1,leftVelocity);
-    mav(0,rightVelocity);
+    mav(1, leftVelocity);
+    mav(0, rightVelocity);
     msleep(inches);
 }
 
 void turnRight(int degrees) {
-    mav(0,-250);
-    mav(1,250);
+    mav(0, -250);
+    mav(1, 250);
     msleep(degrees * (turningTime90) / 90);
     ao();
 }
 
 void turnLeft(int degrees) {
-    mav(0,250);
-    mav(1,-250);
+    mav(0, 250);
+    mav(1, -250);
     msleep(degrees * (turningTime90) / 90);
     ao();
 }
 
-
-
-
-
-int main()
-{
+int main() {
     enable_servos();
     set_servo_position(0, horizontalArm);
     set_servo_position(1, openArm);
     msleep(2000);
-        cmpc(0);
+    cmpc(0);
     cmpc(1);
-    while (analog(0) < 2800) {
-        
-        mav(0,500);
-        mav(1,500);
-        
+    while (analog(0) < 2800)
+    {
+
+        mav(0, 500);
+        mav(1, 500);
+
         printf("sensor reads %d\n", analog(0));
-        
+
         msleep(100);
     }
-    
-    
-    mav(0,500);
-    mav(1,500);
+
+    mav(0, 500);
+    mav(1, 500);
     msleep(800);
     int driveTime = gmpc(1);
     printf("%d\n", driveTime);
     ao();
-    
+
     msleep(2000);
-    
-    
+
     set_servo_position(1, closedArm);
     msleep(2000);
     set_servo_position(0, maxHeightArm);
     msleep(2000);
     turnLeft();
-        printf("%d\n",driveTime);
+    printf("%d\n", driveTime);
     turnLeft();
-    
+
     cmpc(0);
     cmpc(1);
-    while (gmpc(0) < driveTime) {   //2800 ticks = 333 mm  
-        mav(0,500);
-        mav(1,500);
+    while (gmpc(0) < driveTime)
+    { // 2800 ticks = 333 mm
+        mav(0, 500);
+        mav(1, 500);
     }
-        printf("STOP");
-    mav(0,0);
-    mav(1,0);
+    printf("STOP");
+    mav(0, 0);
+    mav(1, 0);
     msleep(2000);
-    
+
     set_servo_position(1, openArm);
     msleep(2000);
     disable_servos();
-        printf("%d\n",driveTime);
+    printf("%d\n", driveTime);
     ao();
 }
-
