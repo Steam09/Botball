@@ -1,10 +1,4 @@
 #include <kipr/wombat.h>
-#include <time.h>
-
-clock_t start = clock(), diff;
-diff = clock() - start;
-int msec = diff * 1000 / CLOCKS_PER_SEC;
-printf("Time taken is %d seconds and %d milliseconds", msec/1000, msec%1000); 
 
 // Ports
 int sideServo = 0;
@@ -15,9 +9,9 @@ int etSensor = 1;
 
 // Moving Times or Speeds
 int turningTime90 = 810;
-int leftVelocity = 1000;
-int rightVelocity = 960;
-// 26.5
+int leftVelocity = 1500;
+int rightVelocity = 1500;
+// 26.5 cm per 1000ms
 
 // Servo Positions
 int horizontalArm = 1473;
@@ -46,7 +40,7 @@ int main() {
     wait_for_light(lightSensor);
     shut_down_in(118);
     
-    // Push 4 intiail left side habitats to Area 1
+    // Push 4 initial left side habitats to Area 1
     enable_servos();
     set_servo_position(sideServo, pushedSide);
     msleep(50);
@@ -54,35 +48,31 @@ int main() {
 
     // Line up with tape
     while (analog(0) < 2800) {
-        mav(0,400);
-        mav(1,400);
-        msleep(50);
+        driveForward(2, leftVelocity, int rightVelocity);
     }
-    ao();
 
     // Sweep top rocks to Area 5 Intersection
-
-
-
-    driveForward(22, leftVelocity, rightVelocity);
+    driveForward(65, leftVelocity, rightVelocity);
     while (analog(lightSensor) < 2800) { 
-        driveForward(0.2, 100, 100)
+        driveForward(2, 100, 100)
     }
-
-
+    turnRight(90);
+    driveForward(50, leftVelocity, rightVelocity);
+    driveForward(20, -1 * leftVelocity, -1 * rightVelocity);
+    turnLeft(180);
     
     // Light Switch
     cmpc(0);
     set_servo_position(rotateServo, 1400);
     while (analog(etSensor) < 2800) { 
-        driveForward(0.2, 100, 100)
+        driveForward(2, 100, 100);
     }
     set_servo_position(rotateServo, 1600);
     msleep(400);
     set_servo_position(rotateServo, 1400);
 
     // Top Cubes
-    driveForward(-4, 500, 500)
+    driveForward(10, -500, -500)
     set_servo_position(rotateServo, verticalArm);
 
     
@@ -117,6 +107,8 @@ void driveForward(float cm, int leftSpeed, int rightSpeed) {
     mav(1,leftVelocity);
     mav(0,rightVelocity);
     msleep(cm*1000/26.5);
+    freeze(0);
+    freeze(1);
 }
 
 void turnRight(int degrees) {
