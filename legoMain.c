@@ -14,9 +14,10 @@ int lightSensor = 0;
 int etSensor = 1;
 
 // Moving Times or Speeds
-int turningTime90 = 4150;
+int turningTime90 = 810;
 int leftVelocity = 1000;
 int rightVelocity = 960;
+// 26.5
 
 // Servo Positions
 int horizontalArm = 1473;
@@ -112,10 +113,10 @@ int main() {
 
 
 
-void driveForward(float inches, int leftSpeed, int rightSpeed) {
+void driveForward(float cm, int leftSpeed, int rightSpeed) {
     mav(1,leftVelocity);
     mav(0,rightVelocity);
-    msleep(inches);
+    msleep(cm*1000/26.5);
 }
 
 void turnRight(int degrees) {
