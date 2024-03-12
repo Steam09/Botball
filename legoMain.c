@@ -11,6 +11,7 @@ int etSensor = 1;
 int turningTime90 = 810;
 int leftVelocity = 1500;
 int rightVelocity = 1500;
+const int tapeIndicator = 3850;
 // 26.5 cm per 1000ms
 
 // Servo Positions
@@ -21,9 +22,11 @@ int closedClaw = 400;
 int innerSide = 200;
 int pushedSide = 1500;
 
+
 void driveForward(float inches, int leftSpeed, int rightSpeed);
 void turnLeft(int degrees);
 void turnRight(int degrees);
+void alignTape();
 
 int main() {
 
@@ -47,15 +50,11 @@ int main() {
     set_servo_position(sideServo, innerSide);
 
     // Line up with tape
-    while (analog(0) < 2800) {
-        driveForward(2, leftVelocity, int rightVelocity);
-    }
+    alignTape();
 
     // Sweep top rocks to Area 5 Intersection
-    driveForward(65, leftVelocity, rightVelocity);
-    while (analog(lightSensor) < 2800) { 
-        driveForward(2, 100, 100)
-    }
+    driveForward(65, leftVelocity, rightVelocity - 200);
+    alignTape();
     turnRight(90);
     driveForward(50, leftVelocity, rightVelocity);
     driveForward(20, -1 * leftVelocity, -1 * rightVelocity);
@@ -100,7 +99,15 @@ int main() {
 
 
 
-
+void alignTape() {
+    while (analog(5) < tapeIndicator) {
+        driveForward(10, 100, 100);
+        msleep(5);
+    }
+    freeze(0);
+    freeze(1);
+    msleep(100);
+}
 
 
 void driveForward(float cm, int leftSpeed, int rightSpeed) {
