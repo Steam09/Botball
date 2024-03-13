@@ -8,9 +8,9 @@ int lightSensor = 0;
 int etSensor = 1;
 
 // Moving Times or Speeds
-int turningTime90 = 810;
+int turningTime90 = 1250;
 int leftVelocity = 1500;
-int rightVelocity = 1500;
+int rightVelocity = 1470;
 const int tapeIndicator = 3850;
 // 26.5 cm per 1000ms
 
@@ -23,10 +23,10 @@ int innerSide = 200;
 int pushedSide = 1500;
 
 
-void driveForward(float inches, int leftSpeed, int rightSpeed);
+void driveForward(float cm, int leftSpeed, int rightSpeed);
 void turnLeft(int degrees);
 void turnRight(int degrees);
-void alignTape();
+void alignTape(int speed);
 
 int main() {
 
@@ -50,17 +50,31 @@ int main() {
     set_servo_position(sideServo, innerSide);
 
     // Line up with tape
-    alignTape();
+    alignTape(250);
 
     // Sweep top rocks to Area 5 Intersection
-    driveForward(65, leftVelocity, rightVelocity - 200);
-    alignTape();
-    turnRight(90);
-    driveForward(50, leftVelocity, rightVelocity);
+    driveForward(75, leftVelocity-100, rightVelocity);
+    turnRight(80);
+    driveForward(18, leftVelocity, rightVelocity);
+    turnRight(30);
+    driveForward(10, leftVelocity, rightVelocity);
     driveForward(20, -1 * leftVelocity, -1 * rightVelocity);
-    turnLeft(180);
+
+    // Red Poms
+    turnRight(60);
+    driveForward(20, leftVelocity, rightVelocity);
+    turnLeft(40);
+	driveForward(27, leftVelocity, rightVelocity);
+    driveForward(20, -1 * leftVelocity, -1 * rightVelocity);
+    alignTape(-250);
     
     // Light Switch
+    turnLeft(90);
+    alignTape(500);
+	driveForward(10, leftVelocity, rightVelocity);
+    turnLeft(90);
+
+    // not finished
     cmpc(0);
     set_servo_position(rotateServo, 1400);
     while (analog(etSensor) < 2800) { 
@@ -82,26 +96,10 @@ int main() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void alignTape() {
+void alignTape(int speed) {
     while (analog(5) < tapeIndicator) {
-        driveForward(10, 100, 100);
+        printf("%d \n", analog(5));
+        driveForward(10, speed, speed);
         msleep(5);
     }
     freeze(0);
@@ -109,85 +107,24 @@ void alignTape() {
     msleep(100);
 }
 
-
 void driveForward(float cm, int leftSpeed, int rightSpeed) {
-    mav(1,leftVelocity);
-    mav(0,rightVelocity);
-    msleep(cm*1000/26.5);
-    freeze(0);
-    freeze(1);
+    mav(1,leftSpeed);
+    mav(0,rightSpeed);
+    msleep(1000/15 * cm);
+    ao();
 }
 
 void turnRight(int degrees) {
-    mav(0,-250);
-    mav(1,250);
+    mav(0,-1000);
+    mav(1,1000);
     msleep(degrees * (turningTime90) / 90);
     ao();
 }
 
 void turnLeft(int degrees) {
-    mav(0,250);
-    mav(1,-250);
+    mav(0,1000);
+    mav(1,-1000);
     msleep(degrees * (turningTime90) / 90);
-    ao();
-}
-
-
-
-
-
-int main()
-{
-    enable_servos();
-    set_servo_position(0, horizontalArm);
-    set_servo_position(1, openArm);
-    msleep(2000);
-        cmpc(0);
-    cmpc(1);
-    while (analog(0) < 2800) {
-        
-        mav(0,500);
-        mav(1,500);
-        
-        printf("sensor reads %d\n", analog(0));
-        
-        msleep(100);
-    }
-    
-    
-    mav(0,500);
-    mav(1,500);
-    msleep(800);
-    int driveTime = gmpc(1);
-    printf("%d\n", driveTime);
-    ao();
-    
-    msleep(2000);
-    
-    
-    set_servo_position(1, closedArm);
-    msleep(2000);
-    set_servo_position(0, maxHeightArm);
-    msleep(2000);
-    turnLeft();
-        printf("%d\n",driveTime);
-    turnLeft();
-    
-    cmpc(0);
-    cmpc(1);
-    while (gmpc(0) < driveTime) {   //2800 ticks = 333 mm  
-        mav(0,500);
-        mav(1,500);
-    }
-        printf("STOP");
-    mav(0,0);
-    mav(1,0);
-    msleep(2000);
-    
-    set_servo_position(1, openArm);
-    msleep(2000);
-    disable_servos();
-        printf("%d\n",driveTime);
     ao();
 }
 
