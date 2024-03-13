@@ -1,5 +1,5 @@
 # Botball
-Hello dear User, whether you're part of (Team Name) / Team 246 or not. 
+Hello dear User, whether you're part of Atlas / Team 246 or not. 
 
 This repository will be mainly to support, document, and keep track of all team files in an online source, properly saved and stored. 
 
@@ -21,8 +21,8 @@ All of our documentation for each of the sections, go to individual files for mo
 
 # Programming Help
 
-
-
+# [Final Presentation Documetation]()
+ - April 27th, Day of Competition
 
 
 
