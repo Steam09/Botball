@@ -1,45 +1,23 @@
 #include <kipr/wombat.h>
-#include <time.h>
-
-clock_t start = clock(), diff;
-ProcessIntenseFunction();
-diff = clock() - start;
-
-int msec = diff * 1000 / CLOCKS_PER_SEC;
-printf("Time taken %d seconds %d milliseconds", msec/1000, msec%1000);
-
-create3_pose_get();
-
-// March 11, 2024 CREATE
-int main()
-{
-// functions 
-    void drive_forward(int distance) 
-    {
-        set_create_distance(0);
-        while(abs(get_create_distance ()) < distance)
-            {
-                create_drive_direct(200,200);
-                msleep(10);
-            }
-    }
-    void turn_left(void) {
-         set_create_total_angle(0);
-        while(abs(get_create_total_angle ()) < 90)
-            {
-                create_drive_direct(-200,200);
-                msleep(10);
-            }
-    }
-    void turn_right(void) {}
-    void drive_backward(int distance) {}
-    void raise_claw(int angle) {}
-    void lower_claw(int angle) {}
-    void raise_plow(int angle) {}
-    void lower_plot(int angle) {}    
 
 // variables
-    int speed = __; 
+int speed = __; 
+
+void turn_right(void) {}
+void drive_backward(int distance) {}
+void raise_claw(int angle) {}
+void lower_claw(int angle) {}
+void raise_plow(int angle) {}
+void lower_plot(int angle) {}    
+
+
+\\ create3_pose_get();
+
+\\ March 11, 2024 CREATE
+int main()
+{
+
+
 
 
 // 0-15 seconds 
@@ -68,3 +46,18 @@ int main()
 
 }
 
+void drive_forward(int distance) {
+    set_create_distance(0);
+    while(abs(get_create_distance ()) < distance) {
+        create_drive_direct(200,200);
+        msleep(10);
+    }
+}
+
+void turn_left(void) {
+    set_create_total_angle(0);
+    while(abs(get_create_total_angle ()) < 90) {
+        create_drive_direct(-200,200);
+        msleep(10);
+    }
+}
