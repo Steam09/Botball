@@ -14,8 +14,23 @@ create3_pose_get();
 int main()
 {
 // functions 
-    void drive_forward(int distance) {}
-    void turn_left(void) {}
+    void drive_forward(int distance) 
+    {
+        set_create_distance(0);
+        while(abs(get_create_distance ()) < distance)
+            {
+                create_drive_direct(200,200);
+                msleep(10);
+            }
+    }
+    void turn_left(void) {
+         set_create_total_angle(0);
+        while(abs(get_create_total_angle ()) < 90)
+            {
+                create_drive_direct(-200,200);
+                msleep(10);
+            }
+    }
     void turn_right(void) {}
     void drive_backward(int distance) {}
     void raise_claw(int angle) {}
