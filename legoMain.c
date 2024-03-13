@@ -15,8 +15,9 @@ const int tapeIndicator = 3850;
 // 26.5 cm per 1000ms
 
 // Servo Positions
-int horizontalArm = 1473;
-int verticalArm = 800;
+int horizontalArm = 400;
+int verticalArm = 1500;
+int backArm = 1600; 
 int openClaw = 20;
 int closedClaw = 400;
 int innerSide = 200;
