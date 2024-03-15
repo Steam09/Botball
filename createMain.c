@@ -1,11 +1,27 @@
 #include <kipr/wombat.h>
 
 // variables
-int speed = __; 
+int speed = 200; 
 
 void turn_right(void) {}
-void drive_backward(int distance) {}
-void raise_claw(int angle) {}
+
+void drive_forward(int distance) {
+set_create_distance(0);
+while (abs(get_create_distance()) < distance){
+create_drive_direct(speed, speed);
+msleep(10);
+}
+}
+
+void drive_backward(int distance) {
+set_create_distance(0);
+while (abs(get_create_distance()) < distance){
+create_drive_direct(-speed, -speed);
+msleep(10);
+}
+void raise_claw(int angle) {
+    
+}
 void lower_claw(int angle) {}
 void raise_plow(int angle) {}
 void lower_plot(int angle) {}    
@@ -16,7 +32,7 @@ void lower_plot(int angle) {}
 \\ March 11, 2024 CREATE
 int main()
 {
-
+create_connect();
 
 
 
