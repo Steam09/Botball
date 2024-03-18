@@ -29,7 +29,7 @@ void driveBackward(float cm, int leftSpeed, int rightSpeed);
 void turnLeft(int degrees);
 void turnRight(int degrees);
 void alignTape(int speed);
-void servoSpeed(int speed, int endPosition);
+void servoSpeed(int port, int speed, int initialPosition, int endPosition);
 void alignWall(void);
 
 int main() {
@@ -39,9 +39,8 @@ int main() {
     cmpc(0);
     cmpc(1);
     set_servo_position(sideServo, innerSide);
-    set_servo_position(rotateServo, verticalArm);
+    set_servo_position(0, 1450);
     set_servo_position(clawServo, closedClaw);
-    disable_servos();
     msleep(1000);
 
     /*
@@ -62,31 +61,37 @@ int main() {
     // Sweep top rocks to Area 5 Intersection
     driveForward(75, leftVelocity-100, rightVelocity);  // Arc to hit the top rock
     turnRight(80);
-    driveForward(18, leftVelocity, rightVelocity);
+    driveForward(22, leftVelocity, rightVelocity);
     turnRight(30);
-    driveForward(10, leftVelocity, rightVelocity);
+    driveForward(8, leftVelocity, rightVelocity);
     driveBackward(20, leftVelocity, rightVelocity);
-    turnRight(180);
+    msleep(500);
+    turnRight(200); // CCURENT
+    msleep(500); 
 
-    // WOK
+    // multis
 
     servoSpeed(0, 5, verticalArm, 1240);
     set_servo_position(1, 1603);
     msleep(200);
-    driveForward(10, leftVelocity, rightVelocity);
+    driveForward(15, leftVelocity, rightVelocity);
     msleep(1000);
-    set_servo_position(1, 1024);
+    set_servo_position(1, 400);
     msleep(500);
-    driveBackward(10, leftVelocity, rightVelocity); 
-    turnLeft(150);
+    driveBackward(20, leftVelocity, rightVelocity); 
+    turnLeft(170);
+    msleep(500);
 
     // Outer Poms
 
     driveForward(10, leftVelocity - 200, rightVelocity); 
     msleep(500);
     driveBackward(20, leftVelocity, rightVelocity); 
+    msleep(500);
     servoSpeed(0, 4, 1240, horizontalArm);
+    msleep(1000);
     set_servo_position(clawServo, openClaw);
+    msleep(500);
     servoSpeed(0, 1, horizontalArm, verticalArm);
 
     // Inner Poms
@@ -104,11 +109,11 @@ int main() {
 }
 
 // Changes how fast the servo goes, otherwise we're gonna make the robot do a kickflip. 
-void servoSpeed(int port, int speed, int intialPosition, int endPosition) {
-	increment = abs((endPosition - intialPosition) / speed);
-	if (endPosition > intialPosition) {
-		for( i = 0; i <= speed; i += 1 ){
-			set_servo_position(port, intialPosition + increment * i);
+void servoSpeed(int port, int speed, int initialPosition, int endPosition) {
+	int increment = abs((endPosition - initialPosition) / speed);
+	if (endPosition > initialPosition) {
+		for( int i = 0; i <= speed; i += 1 ){
+			set_servo_position(port, initialPosition + increment * i);
 			msleep(50);
 			if (initialPosition + increment * i > endPosition) {
 				set_servo_position(port, endPosition);
@@ -119,7 +124,7 @@ void servoSpeed(int port, int speed, int intialPosition, int endPosition) {
 		}
 	}
 	else {
-		for( i = 0; i < speed; i += 1 ){
+		for( int i = 0; i < speed; i += 1 ){
 			set_servo_position(port, initialPosition - increment * i);
 			msleep(50);
 			if (initialPosition - increment * i < endPosition) {
@@ -131,7 +136,6 @@ void servoSpeed(int port, int speed, int intialPosition, int endPosition) {
 		}
 	}
 	enable_servos();
-	return;
 }
 
 // Goes up to the nearest tape in front of it at speed "int speed". 
@@ -144,7 +148,6 @@ void alignTape(int speed) {
     freeze(0);
     freeze(1);
     msleep(100);
-	return();
 }
 
 void driveForward(float cm, int leftSpeed, int rightSpeed) {
@@ -152,7 +155,6 @@ void driveForward(float cm, int leftSpeed, int rightSpeed) {
     mav(0,rightSpeed);
     msleep(1000/15 * cm);
     ao();
-	return();
 }
 
 void driveBackward(float cm, int leftSpeed, int rightSpeed) {
@@ -160,7 +162,6 @@ void driveBackward(float cm, int leftSpeed, int rightSpeed) {
     mav(0,(-1) * rightSpeed);
     msleep(1000/15 * cm);
     ao();
-	return();
 }
 
 void turnRight(int degrees) {
@@ -168,7 +169,6 @@ void turnRight(int degrees) {
     mav(1,1000);
     msleep(degrees * (turningTime90) / 90);
     ao();
-	return();
 }
 
 void turnLeft(int degrees) {
@@ -176,11 +176,10 @@ void turnLeft(int degrees) {
     mav(1,-1000);
     msleep(degrees * (turningTime90) / 90);
     ao();
-	return();
 }
 
 void alignWall(void) {
-    while (leftButton != 1) && (rightButton != 1) {
+    while ((leftButton != 1) && (rightButton != 1)) {
 		if (leftButton == 1) {
 			driveBackward(1, leftVelocity - 800, rightVelocity);
 			msleep(10);
