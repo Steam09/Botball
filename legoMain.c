@@ -40,7 +40,7 @@ int main() {
     cmpc(1);
     set_servo_position(sideServo, innerSide);
     set_servo_position(0, 1450);
-    set_servo_position(clawServo, closedClaw);
+    set_servo_position(1, 200);
     msleep(1000);
 
     /*
@@ -66,7 +66,11 @@ int main() {
     driveForward(8, leftVelocity, rightVelocity);
     driveBackward(20, leftVelocity, rightVelocity);
     msleep(500);
-    turnRight(200); // CCURENT
+    turnRight(100); // CCURENT
+    driveForward(10, leftVelocity, rightVelocity);
+    turnRight(180);
+    driveForward(10, leftVelocity, rightVelocity);
+    turnLeft(75);
     msleep(500); 
 
     // multis
@@ -76,10 +80,10 @@ int main() {
     msleep(200);
     driveForward(15, leftVelocity, rightVelocity);
     msleep(1000);
-    set_servo_position(1, 400);
+    set_servo_position(1, 300);
     msleep(500);
     driveBackward(20, leftVelocity, rightVelocity); 
-    turnLeft(170);
+    turnLeft(130);
     msleep(500);
 
     // Outer Poms
@@ -88,7 +92,7 @@ int main() {
     msleep(500);
     driveBackward(20, leftVelocity, rightVelocity); 
     msleep(500);
-    servoSpeed(0, 4, 1240, horizontalArm);
+    servoSpeed(0, 4, 1240, 300);
     msleep(1000);
     set_servo_position(clawServo, openClaw);
     msleep(500);
