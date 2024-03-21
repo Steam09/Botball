@@ -1,19 +1,18 @@
 #include <kipr/wombat.h>
 // March 11, 2024 CREATE
+// variables
+int lm_speed = 200; 
+int rm_speed = 200;
+
+void turn_left(int angle);
+void open_claw(int angle);
+void raise_claw(int angle);
 int main()
 {
-// functions 
-    void drive_forward(int distance) {}
-    void turn_left(int angle) {}
-    void turn_right(int angle) {}
-    void drive_backward(int distance) {}
-    void open_claw(int angle) {} //open or close
-    void move_plow(int angle) {} //up or down
-
-// variables
-    int lm_speed = __; 
-    int rm_speed = __;
-
+create_connect();
+open_claw(517);
+raise_claw(1000);
+create_disconnect();
 
 // 0-15 seconds 
 // drive out of starting box and sort poms CREATE
@@ -46,7 +45,7 @@ int main()
 //move forward till CREATE is lined up with next rock at corner of rok heap
 //turn left 90 degrees
 //move forward till rock is in plow
-//turn right 45 degrees
+//tun right 45 degrees
 //move forward till all four rocks are in the corner of rock heap
 
 // 45-60 seconds
@@ -131,4 +130,34 @@ int main()
 //turn right 90 degrees
 //move backward into starting box
 
+}
+
+// functions 
+
+void drive_forward(int distance) {
+    create_drive_direct(lm_speed, rm_speed);
+    msleep(distance / 20 * 1000); // 1000 moves 20 cm 
+}
+
+void drive_backward(int distance) {
+    create_drive_direct(-lm_speed, -rm_speed);
+    msleep(distance / 20 * 1000); // 1000 moves 20 cm 
+}
+
+void turn_left(int angle) {
+    create_drive_direct(-lm_speed, rm_speed);
+    msleep(1800 * angle / 180); // 1800 moves 180 degrees
+}
+
+void turn_right(int angle) {
+	create_drive_direct(lm_speed, -rm_speed);
+    msleep(1800 * angle / 180); // 1800 moves 180 degrees
+}
+
+void open_claw(int angle) {
+set_servo_position(1,angle);
+} //open or close
+
+void raise_claw(int angle) {
+set_servo_position(2, angle);
 }
