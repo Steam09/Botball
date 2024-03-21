@@ -17,7 +17,7 @@ const int tapeIndicator = 3850;
 // 26.5 cm per 1000ms
 
 // Servo Positions
-int horizontalArm = 500;
+int horizontalArm = 100;
 int verticalArm = 1321;
 int openClaw = 1731;
 int closedClaw = 1026;
@@ -40,8 +40,8 @@ int main() {
     cmpc(1);
     set_servo_position(sideServo, innerSide);
     set_servo_position(0, 1450);
-    set_servo_position(1, 200);
-    msleep(1000);
+    set_servo_position(clawServo, 400);
+    msleep(100);
 
     /*
     // Waiting for Start Light
@@ -56,7 +56,7 @@ int main() {
     */
 
     // Line up with tape
-    alignTape(750);
+    alignTape(600);
 
     // Sweep top rocks to Area 5 Intersection
     driveForward(75, leftVelocity-100, rightVelocity);  // Arc to hit the top rock
@@ -66,12 +66,27 @@ int main() {
     driveForward(8, leftVelocity, rightVelocity);
     driveBackward(20, leftVelocity, rightVelocity);
     msleep(500);
-    turnRight(100); // CCURENT
-    driveForward(10, leftVelocity, rightVelocity);
     turnRight(180);
+    alignWall();
+    
+    driveForward(25, leftVelocity, rightVelocity);
+    
+    set_servo_position(0, 1450);
+    set_servo_position(clawServo, 1200);
+    
     driveForward(10, leftVelocity, rightVelocity);
-    turnLeft(75);
-    msleep(500); 
+    
+    set_servo_position(clawServo, 100);
+    
+    driveBackward(10, leftVelocity, rightVelocity);
+
+	
+    /*
+    driveForward(25, leftVelocity, rightVelocity);
+    turnRight(180);
+    driveForward(25, leftVelocity, rightVelocity);
+    turnLeft(115);
+    msleep(200); 
 
     // multis
 
@@ -83,16 +98,16 @@ int main() {
     set_servo_position(1, 300);
     msleep(500);
     driveBackward(20, leftVelocity, rightVelocity); 
-    turnLeft(130);
+    turnLeft(100);
     msleep(500);
 
     // Outer Poms
 
-    driveForward(10, leftVelocity - 200, rightVelocity); 
+    driveForward(30, leftVelocity - 500, rightVelocity); 
     msleep(500);
     driveBackward(20, leftVelocity, rightVelocity); 
     msleep(500);
-    servoSpeed(0, 4, 1240, 300);
+    servoSpeed(0, 8, 1240, horizontalArm);
     msleep(1000);
     set_servo_position(clawServo, openClaw);
     msleep(500);
@@ -108,7 +123,7 @@ int main() {
     alignTape(1000);
 
 
-    
+    */
 
 }
 
@@ -144,7 +159,7 @@ void servoSpeed(int port, int speed, int initialPosition, int endPosition) {
 
 // Goes up to the nearest tape in front of it at speed "int speed". 
 void alignTape(int speed) {
-    while (analog(5) < tapeIndicator) {
+    while (analog(5) < 3700) {
         printf("%d \n", analog(5));
         driveForward(10, speed, speed);
         msleep(5);
@@ -183,18 +198,23 @@ void turnLeft(int degrees) {
 }
 
 void alignWall(void) {
-    while ((leftButton != 1) && (rightButton != 1)) {
-		if (leftButton == 1) {
-			driveBackward(1, leftVelocity - 800, rightVelocity);
-			msleep(10);
+    while ((digital(leftButton) != 1) || (digital(rightButton) != 1)) {
+		if (digital(rightButton) == 1) {
+            driveForward(2, 200, 200);
+			driveBackward(4, 200, -200);
+			msleep(50);
+            
 		}
-		else if (rightButton == 1) {
-			driveBackward(1, leftVelocity, rightVelocity - 800);
-			msleep(10);
+		else if (digital(leftButton) == 1) {
+            driveForward(2, 200, 200);
+			driveBackward(2, -200, 200);
+			msleep(50);
 		}
 		else {
 			driveBackward(1, leftVelocity, rightVelocity);
-			msleep(10);
+			msleep(200);
 		}
 	}
 }
+	
+
