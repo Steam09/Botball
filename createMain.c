@@ -1,23 +1,26 @@
 #include <kipr/wombat.h>
 // March 11, 2024 CREATE
 // variables
-int lm_speed = 200; 
+int lm_speed = 180; 
 int rm_speed = 200;
 
+//declare functions
+void drive_forward(int distance);
+void drive_backward(int distance);
 void turn_left(int angle);
+void turn_right(int angle);
 void open_claw(int angle);
 void raise_claw(int angle);
+
 int main()
 {
 create_connect();
-open_claw(517);
-raise_claw(1000);
-create_disconnect();
-
-// 0-15 seconds 
+// 0-15 seconds start with front of CREATE 6 cm from black line and on the side of the right PVC pipe
 // drive out of starting box and sort poms CREATE
-    
-//drive forward
+  //turn_left(34); //turn left toward poms
+  //drive_forward(20); //move toward poms
+  //raise_claw(100); //lower claw to poms
+  //open_claw(620); //close claw
 //raise plow
 //turn left 90 degrees
 //pick up red pom with claw
@@ -38,15 +41,14 @@ create_disconnect();
     
 // 15-45 seconds
 // push rocks into area 6 CREATE
-
-//forward or backward up and line up with T shaped intersection between Areas 3,5,6
-//turn right 90 degrees
-//lower plow behind the 3 rocks that LEGOBOT moved over
-//move forward till CREATE is lined up with next rock at corner of rok heap
-//turn left 90 degrees
-//move forward till rock is in plow
-//tun right 45 degrees
-//move forward till all four rocks are in the corner of rock heap
+    
+drive_forward(80); // drive forward toward rocks at T shaped intersection between Areas 3,5,6 (LEGO will put them there)
+turn_right(15); // realign
+drive_forward(80); //continue driving forward
+turn_left(80); // turn left toward rock at intersection between Area 4 and Rock Heap
+drive_forward(20); // drive toward it
+turn_right(45); // align with rock
+drive_forward(60); // push all four rocks into rock heap
 
 // 45-60 seconds
 // push fuel into area 4 CREATE
@@ -137,6 +139,7 @@ create_disconnect();
 void drive_forward(int distance) {
     create_drive_direct(lm_speed, rm_speed);
     msleep(distance / 20 * 1000); // 1000 moves 20 cm 
+    create_drive_direct(0, 0);
 }
 
 void drive_backward(int distance) {
@@ -146,12 +149,12 @@ void drive_backward(int distance) {
 
 void turn_left(int angle) {
     create_drive_direct(-lm_speed, rm_speed);
-    msleep(1800 * angle / 180); // 1800 moves 180 degrees
+    msleep(2050 * angle / 180); // 1800 moves 180 degrees
 }
 
 void turn_right(int angle) {
 	create_drive_direct(lm_speed, -rm_speed);
-    msleep(1800 * angle / 180); // 1800 moves 180 degrees
+    msleep(2050 * angle / 180); // 1800 moves 180 degrees
 }
 
 void open_claw(int angle) {
