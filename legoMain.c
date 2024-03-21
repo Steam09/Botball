@@ -126,40 +126,39 @@ int main() {
     */
 
 }
-
 // Changes how fast the servo goes, otherwise we're gonna make the robot do a kickflip. 
 void servoSpeed(int port, int speed, int initialPosition, int endPosition) {
-	int increment = abs((endPosition - initialPosition) / speed);
-	if (endPosition > initialPosition) {
-		for( int i = 0; i <= speed; i += 1 ){
-			set_servo_position(port, initialPosition + increment * i);
-			msleep(50);
-			if (initialPosition + increment * i > endPosition) {
-				set_servo_position(port, endPosition);
-				msleep(50);
-				disable_servos();
-				break;
-			}
-		}
-	}
-	else {
-		for( int i = 0; i < speed; i += 1 ){
-			set_servo_position(port, initialPosition - increment * i);
-			msleep(50);
-			if (initialPosition - increment * i < endPosition) {
-				set_servo_position(port, endPosition);
-				msleep(50);
-				disable_servos();
-				break;
-			}
-		}
-	}
-	enable_servos();
+    int increment = abs((endPosition - initialPosition) / speed);
+    if (endPosition > initialPosition) {
+        for( int i = 0; i <= speed; i += 1 ){
+            set_servo_position(port, initialPosition + increment * i);
+            msleep(50);
+            if (initialPosition + increment * i > endPosition) {
+                set_servo_position(port, endPosition);
+                msleep(50);
+                disable_servos();
+                break;
+            }
+        }
+    }
+    else {
+        for( int i = 0; i < speed; i += 1 ){
+            set_servo_position(port, initialPosition - increment * i);
+            msleep(50);
+            if (initialPosition - increment * i < endPosition) {
+                set_servo_position(port, endPosition);
+                msleep(50);
+                disable_servos();
+                break;
+            }
+        }
+    }
+    enable_servos();
 }
 
 // Goes up to the nearest tape in front of it at speed "int speed". 
 void alignTape(int speed) {
-    while (analog(5) < 3700) {
+    while ((analog(leftLightSensor) < tapeDetection) && (analog(rightLightSensor) < tapeDetection)) {
         printf("%d \n", analog(5));
         driveForward(10, speed, speed);
         msleep(5);
@@ -199,22 +198,65 @@ void turnLeft(int degrees) {
 
 void alignWall(void) {
     while ((digital(leftButton) != 1) || (digital(rightButton) != 1)) {
-		if (digital(rightButton) == 1) {
+        if (digital(rightButton) == 1) {
             driveForward(2, 200, 200);
-			driveBackward(4, 200, -200);
-			msleep(50);
-            
-		}
-		else if (digital(leftButton) == 1) {
-            driveForward(2, 200, 200);
-			driveBackward(2, -200, 200);
-			msleep(50);
-		}
-		else {
-			driveBackward(1, leftVelocity, rightVelocity);
-			msleep(200);
-		}
-	}
-}
-	
+            driveBackward(5, 200, -200);
+            msleep(50);
 
+        }
+        else if (digital(leftButton) == 1) {
+            driveForward(2, 200, 200);
+            driveBackward(5, -200, 200);
+            msleep(50);
+        }
+        else {
+            driveBackward(1, leftVelocity, rightVelocity);
+            msleep(200);
+        }
+    }
+}
+
+
+void lineTrack(int distance, int direction) { // in centimeteres, direction == 0 <-- left, 1 <-- right
+    int tickDistance = 28.5 * distance * 1800;
+    cmpc(0);
+    cmpc(1);
+    if (direction == 0) {
+        while (analog(leftLightSensor) < tapeDetection) { // Turn left and drive up to tape
+        	driveForward(2, leftVelocity - 400, rightVelocity);
+        	msleep(20);
+    	} 
+        driveForward(3, leftVelocity, 0);
+        ao();
+        msleep(50);
+  	}
+    else {
+        while (analog(rightLightSensor) < tapeDetection) { // Turn right and drive up to tape
+        	driveForward(2, leftVelocity, rightVelocity - 400);
+        	msleep(20);
+    	}
+        driveForward(3, 0, rightVelocity);
+        ao();
+        msleep(50);
+    }
+    
+	while ((gmpc(1) + gmpc(0)) / 2 < tickDistance) { // start wiggling
+        if ((analog(leftLightSensor) < tapeDetection) && (analog(rightLightSensor) < tapeDetection)) {
+            driveForward(2, leftVelocity, rightVelocity);
+            continue;
+        }
+        if ((analog(leftLightSensor) < tapeDetection) && (analog(rightLightSensor) > tapeDetection)) {
+            driveForward(2, leftVelocity, rightVelocity - 600);
+            continue;
+        }
+        if ((analog(leftLightSensor) > tapeDetection) && (analog(rightLightSensor) < tapeDetection)) {
+            driveForward(2, leftVelocity - 600, rightVelocity);
+            continue;
+        }
+    }
+    freeze(0);
+    freeze(1);
+
+
+
+}
