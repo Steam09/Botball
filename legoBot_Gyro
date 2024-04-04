@@ -1,0 +1,87 @@
+
+double biasx = 0;
+double biasy = 0;
+double biasz = 0;
+double theta = 0;
+
+double conversion = 560000/90;
+
+double angle_f;
+
+void turnRight(int degrees);
+
+
+int main() {
+
+    printf("calibrate");
+    gyroCalibrate();
+
+    msleep(500);
+
+    rotate(90);
+
+    printf("oof");
+    msleep(500);
+    printf("ded");
+}
+
+void rotate(int aa) {
+
+    double t0;
+    printf("move");
+    int angle = 0;
+    aa = aa * angle_f;
+
+    if (aa > 0){
+        mav(0, 1500);
+        mav(1, -1500);
+
+        while (1) {
+            angle += (gyro_z()-biasz)*10;
+            msleep(1);
+            if (angle > aa) {
+                break;
+            }
+        }
+        ao();
+
+    } else {
+        mav(0, -1500);
+        mav(1, 1500);
+        t0 = seconds();
+        while (1) {
+            angle += (gyro_z()-biasz)*(seconds()-t0);
+            t0 = seconds();
+            if (angle < aa * 0.99) {
+                break;
+            }
+        }
+        ao();
+
+    }
+
+}
+
+void gyroCalibrate() {
+
+    int samples = 100;
+
+    // Find the average noise of the gyro. Get the bias for gyro axis by sampling the stationary output.
+    int i = 0;
+    double sumX = 0, sumY = 0, sumZ = 0;
+    while (i < samples)
+    {
+        sumX += gyro_x();
+        sumY += gyro_y();
+        sumZ += (double)(gyro_z()/5)*5;
+        msleep(10);
+        i++;
+    }
+
+    biasx = sumX / samples;
+    biasy = sumY / samples;
+    biasz = sumZ / samples;
+
+    printf("[Gyro Calibrate]: Bias Z: %d | Bias Y: %d | Bias X: %d \n", biasz, biasy, biasx);
+
+}
