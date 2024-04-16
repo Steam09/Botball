@@ -13,6 +13,12 @@ void open_claw(int angle);
 void raise_claw(int angle);
 void raise_claw_arm(int angle);
 
+//Order of Events
+//Sort top pom
+//Push rocks
+//Grab Multipliers
+//Split Multipliers
+//habitats 
 int main()
 {
 	create_connect();
