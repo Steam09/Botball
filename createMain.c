@@ -13,15 +13,16 @@ void open_claw(int angle);
 void raise_claw(int angle);
 void raise_claw_arm(int angle);
 
-//Order of Events
-//Sort top pom
-//Push rocks
-//Grab Multipliers
-//Split Multipliers
-//habitats 
 int main()
 {
 	create_connect();
+    enable_servos();
+    /*
+        wait_for_light(0);
+    */
+    msleep(12000);
+    //PAUSE FOR EXTRA CRED RUN TO GIVE LEGOBOT TIME
+    
     //beginning servo positions: 0-1024, 2-248, 3-1466
 /*    //red/green poms (NOT TESTED)
     drive_forward(2000); //move forward
@@ -38,31 +39,34 @@ int main()
     //open_claw(354); //turn robot left toward first top pom
 */
     raise_claw_arm(931); // port 0 - 931
-    raise_claw(1831); // port 2 - 1783
+    raise_claw(1452); // port 2 - formerly 1831
     open_claw(1600); 
     //rocks (TESTED)
     drive_forward(6600); //drive toward 3 rocks
     turn_left(400); // turn to catch 4th rock
     drive_forward(3000); //drive into rock heap and catch 5th rock 
     turn_left(190); // turn toward rock heap
-    drive_forward(1200); // push
+    drive_forward(1000); // push //CHANGED from 1200
     turn_right(120); // turn right to unlatch from rock
     drive_backward(500); // back up to prepare for poms
     turn_left(300);
-    drive_backward(1700);
+    drive_backward(1600);
     // third orange pom (TESTED)
-    turn_left(480);
-    //drive_forward(2500);
-    //drive_backward(2000);
+    turn_left(480); //CHANGED from 420
+    msleep(500); 
     // taller green multipliers
-    //turn_left(100);
-    turn_left(60);
-    drive_forward(2560);
+    //turn_left(60);
+    msleep(500);
+    drive_forward(2700); //CHANGED
     msleep(1000);
-    open_claw(550); // close claw
+    raise_claw(1775); //was 1815 CHANGED
+    msleep(1000);
+    open_claw(250); // close claw
+    msleep(1000);
     drive_backward(1500);
     turn_right(1000);
-    raise_claw_arm(1600);
+    raise_claw_arm(1700); //was 1840
+    msleep(500);
     open_claw(1600);
     //habitats (NOT TESTED)
 }
@@ -84,7 +88,6 @@ void turn_left(int angle) {
     create_drive_direct(-lm_speed, rm_speed);
     msleep(angle);
     create_drive_direct(0, 0);
-
 }
 
 void turn_right(int angle) {
@@ -102,5 +105,5 @@ set_servo_position(2, angle);
 }
 
 void raise_claw_arm(int angle) {
-set_servo_position(0, angle);
+	set_servo_position(0, angle);
 }
