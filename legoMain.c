@@ -37,6 +37,12 @@ void alignWall(void);
 void habitats(int poleNum, int num, int side);
 void grabHabitat(int newNum);
 
+//Order of Events
+//Push Rocks
+//Grab Multipliers
+//Get OUTTA MY WAY!!!
+//Sort Poms
+//Habitats 
 int main() {
 
     // Resetting Servos
