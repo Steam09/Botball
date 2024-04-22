@@ -23,7 +23,7 @@ int main()
     */
     
     //PAUSE TO GIVE LEGOBOT TIME
-    msleep(12000);
+    msleep(15000);
     
     //beginning servo positions: 0-1024, 2-248, 3-1466
 /*    //red/green poms (NOT TESTED)
@@ -60,11 +60,11 @@ int main()
     
     // taller green multipliers
     msleep(500);
-    drive_forward(2600); //CHANGEDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+    drive_forward(2585); //was 2600 CHANGEDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
     msleep(1000);
-    raise_claw(1750); //was 1800 CHANGED port 2
+    raise_claw(1770); //was 1750 CHANGED port 2
     msleep(1000);
-    open_claw(250); // close claw
+    open_claw(450); // close claw
     msleep(1000);
     drive_backward(1500);
     turn_right(1000);
@@ -99,15 +99,20 @@ int main()
     msleep(500);
     
     //setting servos for horizontal habitats
-    raise_claw_arm(2047);
+    /*raise_claw_arm(2047);
     raise_claw(350);
     open_claw(1100);
-    msleep(500);
+    msleep(500); */
+    
+    //setting servos to not smash into horizontal habitats
+    raise_claw_arm(1000);
+    raise_claw(750);
+    open_claw(1100);
     
     //pushing green poms into Area 2
     drive_forward(2200);
     msleep(500);
-    turn_left(600);
+    turn_left(600); //turns to push poms that are farther from startbox
     msleep(500);
     drive_forward(1000);
     turn_left(300);
@@ -115,24 +120,32 @@ int main()
     msleep(500);
     turn_left(200);
     msleep(500);
-    drive_backward(1100);
+    drive_backward(1100); //backs up
     msleep(500);
-    turn_right(1000);
-    drive_forward(600);
+    turn_right(500); //turns, might hit poms that are closer to startbox
+    drive_forward(300);
+    turn_right(500); //finishes turning to face habitats
+    
+    //positions claw to pick up habitats
+    raise_claw_arm(2047);
+    raise_claw(350);
+    open_claw(1100);
+    //THIS NEEDS TO BE CHANGED TO THE SERVO SPEED FUNCTIONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN!!!!!!!!
+    
+    drive_forward(300);
     turn_right(600);
     msleep(500);
     drive_forward(600);
     msleep(500);
-    turn_right(600);
+    turn_right(800);
     msleep(500);
-    drive_forward(600);
     
     //taller horizontal habitats
     open_claw(0);
     drive_backward(1000);
-    turn_left(100);
-    drive_forward(1000);
-    raise_claw(1100);
+    turn_left(200);
+    drive_forward(700);
+    raise_claw(1200);
     open_claw(1036);
     
     
