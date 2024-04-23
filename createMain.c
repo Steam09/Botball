@@ -23,26 +23,11 @@ int main()
     */
     
     //PAUSE TO GIVE LEGOBOT TIME
-    msleep(12000);
-    
-    //beginning servo positions: 0-1024, 2-248, 3-1466
-/*    //red/green poms (NOT TESTED)
-    drive_forward(2000); //move forward
-    turn_left(260);
-    drive_forward(120);
-    msleep(1000);
-    raise_claw_arm(1843); // set claw arm to sort top pom
-	msleep(1000);
-    raise_claw(1651); //set claw arm to sort top poms
-    msleep(1000);
-    open_claw(1024); //open claw
-    turn_left(200); // turn toward poms
-    msleep(1000000);
-    //open_claw(354); //turn robot left toward first top pom
-*/
+    //msleep(15000);
+ 
     raise_claw_arm(931); // port 0 - 931
     raise_claw(1452); // port 2 - formerly 1831
-    open_claw(1600); 
+    open_claw(1800); 
     
     //rocks (TESTED)
     drive_forward(6600); //drive toward 3 rocks
@@ -56,35 +41,40 @@ int main()
     drive_backward(1600);
     
     // 2 orange poms (TESTED)
-    turn_left(480); //CHANGED from 420
+    turn_left(460); //CHANGED from 420
     
     // taller green multipliers
     msleep(500);
-    drive_forward(2600); //CHANGEDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
+    drive_forward(2535); //was 2585 
     msleep(1000);
-    raise_claw(1750); //was 1800 CHANGED port 2
+    raise_claw(1770); //was 1750 CHANGED port 2
     msleep(1000);
-    open_claw(250); // close claw
+    servoSpeed(3, 30, 1800, 450); //close claw
+    //open_claw(450); // close claw
     msleep(1000);
     drive_backward(1500);
     turn_right(1000);
     //raise_claw_arm(1700); //was 1840 port 0 
-    servoSpeed(0, 30, 931, 1791); //CHANGEDDDDDDDDDDDDDDDD
+    servoSpeed(0, 30, 931, 1791); //changed
     msleep(500);
     open_claw(1600);
+    raise_claw_arm(650);
     
     //split multipliers & move one to fuel area
-    raise_claw_arm(1000);
+    turn_right(130);
+    drive_forward(800);
+    
+ /*   raise_claw_arm(1000);
     msleep(1000);
-    turn_right(140);
+    turn_right(130);
     msleep(1000);
     drive_forward(1200);
     msleep(1000);
-
+*/
     //pushing third fuel
     turn_right(2500); //decrease this turn was 2500 changed
     msleep(1000);
-    drive_forward(700); //was 1200 changed
+    drive_forward(710); //was 1200 changed
     msleep(500);
     turn_right(300);
     drive_forward(370);
@@ -98,54 +88,60 @@ int main()
     turn_left(800); //800 to go straight
     msleep(500);
     
-    //setting servos for horizontal habitats
-    raise_claw_arm(2047);
-    raise_claw(350);
-    open_claw(1100);
-    msleep(500);
-    
     //pushing green poms into Area 2
-    drive_forward(2200);
+    drive_forward(2200); //long distance across board going past moonbase
     msleep(500);
-    turn_left(600);
+    turn_left(600); //turns to push poms that are farther from startbox
     msleep(500);
     drive_forward(1000);
     turn_left(300);
-    drive_forward(600);
+    drive_forward(300);
     msleep(500);
     turn_left(200);
     msleep(500);
-    drive_backward(1100);
+    drive_backward(1100); //BACKS UP
     msleep(500);
-    turn_right(1000);
-    drive_forward(600);
+    turn_right(500); //turns, might hit poms that are closer to startbox 
+    msleep(500);
+    drive_forward(700); 
+    msleep(500);
+    turn_right(200);
+    msleep(500);
+    drive_forward(300);
+    msleep(500);
+    turn_right(300); //finishes turning to face habitats
+    msleep(500); 
+    drive_forward(500);
+    msleep(500);
     turn_right(600);
     msleep(500);
-    drive_forward(600);
+    drive_forward(400);
+    msleep(500); 
+    
+    
+    
+    //positions claw to pick up habitats
+    raise_claw_arm(1702);
+    raise_claw(1100);
+    open_claw(1100);
     msleep(500);
-    turn_right(600);
+    
+    turn_right(700);
     msleep(500);
-    drive_forward(600);
     
     //taller horizontal habitats
-    open_claw(0);
+    //raise_claw(320);
+    //open_claw(0);
+    
+    servoSpeed(2, 30, 1100, 320);
+    servoSpeed(3, 30, 1100, 0);
+    
     drive_backward(1000);
-    turn_left(100);
-    drive_forward(1000);
-    raise_claw(1100);
+    turn_left(200);
+    drive_forward(700);
+    raise_claw(1200);
     open_claw(1036);
     
-    
-    
-    //habitats (NOT TESTED)
-    /*open_claw(900);
-    drive_backward(350);
-    turn_left(140);
-    drive_forward(200);
-    raise_claw_arm(1990);
-    raise_claw(1000);
-    msleep(500);
-    open_claw(180); */
     
     printf("done\n");
 }
@@ -215,17 +211,3 @@ void servoSpeed(int port, int speed, int initialPosition, int endPosition) {
 	}
 	enable_servos();
 }
-
-
-    //splitting multipliers w servoSpeed
-    /*msleep(500);
-    servoSpeed(2, 500, 1800, 1700); 
-    msleep(1000);
-    turn_left(150); 
-    msleep(1000);
-    msleep(1000);
-    servoSpeed(2, 500, 1700, 1850); 
-    msleep(1000);
-    servoSpeed(3, 500, 1600, 500); 
-    msleep(1000);
-    turn_left(100);*/
